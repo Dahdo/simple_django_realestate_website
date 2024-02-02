@@ -1,0 +1,45 @@
+{% extends 'estate/estate.html' %}
+{% load static %}
+{% block additional-styles %}
+    <link rel="stylesheet" href="{% static 'estate/css/property_detail.css' %}">
+{% endblock %}
+{% block listing-header %}<h1>{{ property.title }}</h1>{% endblock %}
+{% block listing %}
+    <div class="property-container">
+        <div class="property-images" id="imageSlider">
+            <img src="{{ property.image_1.url }}" alt="Property Image 1">
+            {% if property.image_2 %}
+                <img src="{{ property.image_2.url }}" alt="Property Image 2">
+            {% endif %}
+            {% if property.image_3 %}
+                <img src="{{ property.image_3.url }}" alt="Property Image 3">
+            {% endif %}
+            <button id="prevButton">Previous</button>
+            <button id="nextButton">Next</button>
+        </div>
+
+        <div class="property-details">
+            <p><strong>Description:</strong> {{ property.description }}</p>
+            <p><strong>Price:</strong> {{ property.price }} zł</p>
+            <p><strong>Location:</strong> {{ property.location }}</p>
+            <p><strong>Category:</strong> {{ property.get_category_display }}</p>
+            <p><strong>Status:</strong> {{ property.get_status_display }}</p>
+            <p><strong>Contact The property Owner:</strong></p>
+            {% if user.is_authenticated %}
+                <p><strong>Username:</strong> {{ custom_user.username }}</p>
+                <p><strong>Phone:</strong> {{ custom_user.phone_number }}</p>
+                <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
+                
+                {% else %}
+                    <p><a href="{% url 'login' %}">Login</a> or
+                        <a href="{% url 'register' %}">Register</a> to see the owner's contact info
+                    </p>
+            {% endif  %}
+        </div>
+    </div>
+    <script src="{% static 'estate/js/property_detail.js' %}"></script>
+{% endblock %}
+
+{% block by-category %}{% endblock %}
+{% block search-container %}{% endblock %}
+{% block featured-properties %}{% endblock %}

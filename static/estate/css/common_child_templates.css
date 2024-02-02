@@ -1,0 +1,14 @@
+.login_first {
+    margin: 0 auto;
+    text-align: center;
+}
+.login_first a {
+    text-decoration: none;
+    color: var(--accent-color-orange);
+    font-weight: bolder;
+}
+
+h1 {
+    text-align: center;
+}
+

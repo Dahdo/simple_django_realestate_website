@@ -1,0 +1,26 @@
+{% extends 'estate/estate.html' %}
+{% load static %}
+{% block additional-styles %}
+    <link rel="stylesheet" href="{% static 'estate/css/common_child_templates.css' %}">
+{% endblock %}
+{% block listing-header %}<h1>Profile Information</h1>{% endblock %}
+
+{% block listing %}
+    <p><strong>Profile Picture:</strong>
+        <img src="{{ profile.profile_pic_url }}">
+    </p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+    <p><strong>Location:</strong> {{ profile.location }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio }}</p>
+    
+    
+    <a href="{% url 'profile_edit' %}">Edit Profile</a>
+{% endblock %}
+
+{% block by-category %}{% endblock %}
+{% block search-container %}{% endblock %}
+{% block featured-properties %}{% endblock %}

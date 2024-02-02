@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstateConnect</title>
+    {% block additional-styles %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'estate/css/estate.css' %}">
+    <script src="{% static 'estate/js/script.js' %}"></script>
+</head>
+<body>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <nav id="navbar">
+        <div class="top-nav">
+            <a href="{% url 'estate' %}">
+                <img id="logo" src="{% static 'estate/images/logo.png' %}">
+            </a>
+            <div class="social-connect">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Profile</a>
+                    <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+                <div class="social">
+                    <a href="#"><img src="{% static 'estate/images/x.png' %}"></a>
+                    <a href="#"><img src="{% static 'estate/images/instagram.png' %}"></a>
+                    <a href="#"><img src="{% static 'estate/images/facebook.png' %}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="main-nav">
+            <ul>
+                <li><a href="{% url 'for_sale' %}">For Sale</a></li>
+                <li><a href="{% url 'for_rent' %}">For Rent</a></li>
+                <li><a href="{% url 'submit_property' %}">Submit Properties</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contacts</a></li>
+            </ul>
+        </div>
+    </nav>
+    {% block search-container %}
+        <div id="search-container">
+            <form action="{% url 'search_and_filter' %}" method="get">
+                <div id="search-bar">
+                    <img src="{% static 'estate/images/search.png' %}">
+                    <input type="text" id="search-input" placeholder="Search for a property">
+                </div>
+                <div id="filter-container">
+                    <div class="filter-item">
+                        <label for="state">State:</label>
+                        <select id="state" name="state">
+                            <option value="all-states" selected>All States</option>
+                            {% for state in states %}
+                                <option value="{{ state }}">{{ state }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="city">City:</label>
+                        <select id="city" name="city">
+                            <option value="all-cities" selected>All Cities</option>
+                            {% for city in cities %}
+                                <option value="{{ city }}">{{ city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="category">Category:</label>
+                        <select id="category" name="category">
+                            <option value="all-categories" selected>All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="status">Property Status:</label>
+                        <select id="status" name="status">
+                            <option value="all-status" selected>All Status</option>
+                            {% for status in statuses %}
+                                <option value="{{ status }}">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="min-price">Min Price:</label>
+                        <input type="number" id="min-price" name="min-price"/>
+                    </div>
+                    <div class="filter-item">
+                        <label for="max-price">Max Price:</label>
+                        <input type="number" id="max-price" name="max-price"/>
+                    </div>
+                    <button type="submit" id="search-button">Search</button>
+                </div>
+            </form>
+        </div>
+    {% endblock %}
+        <main>
+            {% block by-category %}{% endblock %} {# to be added later #}
+            {% block listing-header %}<h1>All Properties</h1>{% endblock %}
+            {% block listing %}
+                <div class="property-card-container">
+                    {% for property in properties %}
+                        <div class="property-card" data-property-pk="{{ property.pk }}">
+                            <p class="card-title">{{ property.title }}</p>
+                            <div class="property-inner-card">
+                                <div class="property-image-card">
+                                    <img src="
+                                    {% if property.image_1 %}
+                                        {{ property.image_1.url }}
+                                    {% endif %}">
+                                    <p class="image-label">{{ property.get_status_display }}</p>
+                                </div>
+                                <div class="property-description-card">
+                                    <p class="price-tag">From {{ property.price }} zł - {{ property.get_category_display }}</p>
+                                    <p class="property-description">{{ property.description }}</p>
+                                    <p class="property-more-details"><a href="#">More details</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endblock %}
+            {% block featured-properties %}{% endblock %}{# to be added later #}
+        </main>
+    <footer class="footer">
+        <p>Koszykowa 75, 00-662 Warszawa</p>
+        <p>&copy; 2023 EstateConnect. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

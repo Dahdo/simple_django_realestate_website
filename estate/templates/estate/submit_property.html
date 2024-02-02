@@ -1,0 +1,31 @@
+{% extends 'estate/estate.html' %}
+{% load static %}
+{% block additional-styles %}
+    <link rel="stylesheet" href="{% static 'estate/css/common_child_templates.css' %}">
+{% endblock %}
+{% block listing-header %}<h1>Submit Property</h1>{% endblock %}
+{% block listing %}
+    {% if user.is_authenticated %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Include location form fields -->
+            {{ form.location_form.as_p }}
+
+            <input type="submit" value="Submit">
+        </form>
+
+        {% else %}
+            <div class="login_first">
+                <p><a href="{% url 'login' %}">Login</a> or
+                    <a href="{% url 'register' %}">Register</a> to submit your property</p>
+            </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block by-category %}{% endblock %}
+{% block search-container %}{% endblock %}
+{% block featured-properties %}{% endblock %}
+
