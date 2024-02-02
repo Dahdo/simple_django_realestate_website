@@ -1,1 +1,1 @@
-# simple_django_realestate_website
+This is a simple real estate project that uses html, css, js and django.
